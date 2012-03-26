@@ -1,0 +1,30 @@
+name:                integration
+version:             0.1
+stability:           experimental
+synopsis:            Fast robust numeric integration via tanh-sinh quadrature
+description:         Fast robust numeric integration via tanh-sinh quadrature
+homepage:            https://github.com/ekmett/integration
+license:             BSD3
+license-file:        LICENSE
+author:              Edward Kmett
+maintainer:          Edward Kmett <ekmett@gmail.com>
+category:            Graphics
+build-type:          Simple
+cabal-version:       >=1.6
+
+extra-source-files: codegen/TableGen.hs
+
+Library
+  -- Packages needed in order to build this package.
+  build-depends:
+     base                   >= 4 && < 5,
+     parallel               >= 3.2 && < 3.3
+
+  exposed-modules: Numeric.Integration.TanhSinh
+
+  ghc-options: -O2 -fexcess-precision -threaded -Wall -O2 -fspec-constr -fliberate-case -fstatic-argument-transformation -fspec-constr-count=10
+
+source-repository head
+  type: git
+  location: git://github.com/ekmett/integration.git
+
