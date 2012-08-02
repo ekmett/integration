@@ -53,23 +53,28 @@ module Numeric.Integration.TanhSinh
   , relative -- relative error
   -- * Confidence intervals
   , confidence
+  -- * Changes of variables
+  , nonNegative
+  , everywhere
   ) where
 
 import Control.Parallel.Strategies
 import Data.List (foldl')
 
--- integral with an result and an estimate of the error such that (result - errorEstimate, result + errorEstimate) probably bounds the actual answer.
+-- | Integral with an result and an estimate of the error such that
+-- @(result - errorEstimate, result + errorEstimate)@ /probably/ bounds 
+-- the actual answer.
 data Result = Result
   { result        :: {-# UNPACK #-} !Double
   , errorEstimate :: {-# UNPACK #-} !Double
   , evalutions    :: {-# UNPACK #-} !Int
   } deriving (Read,Show,Eq,Ord)
 
+-- | Convert a Result to a confidence interval
 confidence :: Result -> (Double, Double)
 confidence (Result a b _) = (a - b, a + b)
 
--- TanhSinh quadrature
-
+-- | Filter a list of results using a specified absolute error bound
 absolute :: Double -> [Result] -> Result
 absolute targetError = go where
   go [] = error "no result"
@@ -78,6 +83,7 @@ absolute targetError = go where
     | e < targetError*0.1 = r
     | otherwise = absolute targetError rs
 
+-- | Filter a list of results using a specified relative error bound
 relative :: Double -> [Result] -> Result
 relative _ [] = error "no result"
 relative _ [r] = r
@@ -90,6 +96,24 @@ relative targetError (r'@(Result a _ _):rs') = go a r' rs' where
 m_huge :: Double
 m_huge = 1/0 -- 1.7976931348623157e308
 
+-- | Integrate a function from 0 to infinity by using the change of variables @x = t/(1-t)@
+--
+-- This works /much/ better than just clipping the interval at some arbitrary large number.
+nonNegative :: ((Double -> Double) -> Double -> Double -> r) -> (Double -> Double) -> r
+nonNegative method f = method (\t -> f(t/(1-t))/square(1-t)) 0 1 where
+  square x = x * x
+
+-- | Integrate from -inf to inf using tanh-sinh quadrature after using the change of variables @x = tan t@
+--
+-- > everywhere trap (\x -> x*x*exp(-x))
+--
+-- This works /much/ better than just clipping the interval at arbitrary large and small numbers.
+
+-- TODO: build a custom set of change of variable tables
+everywhere :: ((Double -> Double) -> Double -> Double -> r) -> (Double -> Double) -> r
+everywhere method f = method (\t -> f (tan t) * (1 + square (sec t))) (-1) 1
+  where sec x = recip (cos x)
+        square x = x * x
 
 -- | Integration using a truncated trapezoid rule and tanh-sinh quadrature with a specified evaluation strategy
 trap' :: Strategy [Double] -> (Double -> Double) -> Double -> Double -> [Result]
