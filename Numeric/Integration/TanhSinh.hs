@@ -111,9 +111,7 @@ nonNegative method f = method (\t -> f(t/(1-t))/square(1-t)) 0 1 where
 
 -- TODO: build a custom set of change of variable tables
 everywhere :: ((Double -> Double) -> Double -> Double -> r) -> (Double -> Double) -> r
-everywhere method f = method (\t -> f (tan t) * (1 + square (sec t))) (-1) 1
-  where sec x = recip (cos x)
-        square x = x * x
+everywhere method f = method (\t -> let tant = tan t in f tant * (1 + tant * tant)) (-pi/2) (pi/2)
 
 -- | Integration using a truncated trapezoid rule and tanh-sinh quadrature with a specified evaluation strategy
 trap' :: Strategy [Double] -> (Double -> Double) -> Double -> Double -> [Result]
