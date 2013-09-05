@@ -105,7 +105,7 @@ nonNegative method f = method (\t -> f(t/(1-t))/square(1-t)) 0 1 where
 
 -- | Integrate from -inf to inf using tanh-sinh quadrature after using the change of variables @x = tan t@
 --
--- > everywhere trap (\x -> x*x*exp(-x))
+-- > everywhere trap (\x -> exp(-x*x))
 --
 -- This works /much/ better than just clipping the interval at arbitrary large and small numbers.
 
