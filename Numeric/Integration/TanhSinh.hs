@@ -24,7 +24,7 @@
 -- gained quadratically in the number of digits.
 --
 -- > ghci> absolute 1e-6 $ parTrap sin (pi/2) pi
--- > Result {result = 0.9999999999999312, errorEstimate = 2.721789573237518e-10, evalutions = 25}
+-- > Result {result = 0.9999999999999312, errorEstimate = 2.721789573237518e-10, evaluations = 25}
 --
 -- > ghci> confidence $ absolute 1e-6 $ trap sin (pi/2) pi
 -- > (0.9999999997277522,1.0000000002721101)
@@ -33,7 +33,7 @@
 -- singularities at the end points.
 --
 -- > ghci> absolute 1e-6 $ trap (recip . sqrt . sin) 0 1
--- > Result {result = 2.03480500404275, errorEstimate = 6.349514558579017e-8, evalutions = 49}
+-- > Result {result = 2.03480500404275, errorEstimate = 6.349514558579017e-8, evaluations = 49}
 --
 -- See <http://www.johndcook.com/blog/2012/02/21/care-and-treatment-of-singularities/>
 -- for a sense of how more naive quadrature schemes fare.
@@ -67,7 +67,7 @@ import Data.List (foldl')
 data Result = Result
   { result        :: {-# UNPACK #-} !Double
   , errorEstimate :: {-# UNPACK #-} !Double
-  , evalutions    :: {-# UNPACK #-} !Int
+  , evaluations   :: {-# UNPACK #-} !Int
   } deriving (Read,Show,Eq,Ord)
 
 -- | Convert a Result to a confidence interval
