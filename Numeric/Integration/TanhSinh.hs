@@ -9,10 +9,8 @@
 -- Stability   :  provisional
 -- Portability :  portable
 --
--- An implementation of Takahashi and Mori's Tanh-Sinh
--- quadrature.
---
--- <http://en.wikipedia.org/wiki/Tanh-sinh_quadrature>
+-- An implementation of Takahashi and Mori's
+-- <http://en.wikipedia.org/wiki/Tanh-sinh_quadrature Tanh-Sinh quadrature>.
 --
 -- Tanh-Sinh provides good results across a wide-range
 -- of functions and is pretty much as close to a
@@ -35,8 +33,8 @@
 -- > ghci> absolute 1e-6 $ trap (recip . sqrt . sin) 0 1
 -- > Result {result = 2.03480500404275, errorEstimate = 6.349514558579017e-8, evaluations = 49}
 --
--- See <http://www.johndcook.com/blog/2012/02/21/care-and-treatment-of-singularities/>
--- for a sense of how more naive quadrature schemes fare.
+-- See John D. Cook's <http://www.johndcook.com/blog/2012/02/21/care-and-treatment-of-singularities/ "Care and Treatment of Singularities">
+-- for a sense of how more naïve quadrature schemes fare.
 ----------------------------------------------------------------------------
 module Numeric.Integration.TanhSinh
   (
