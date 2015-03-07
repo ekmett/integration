@@ -120,9 +120,9 @@ trap' nf f a b = go (0 :: Int) (i0+i1) (abs (i1-i0)) m_huge dd where
       !ht = 0.5*t
       !t' = ht'+ht
       !delta = abs (ht'-ht)
-      !err' | delta == 0 || old_delta == 0                         = err
-            | r <- log delta / log old_delta, 1.99 < r && r < 2.01 = delta*delta
-            | otherwise                                            = delta
+      !err' | delta == 0 || old_delta == 0                       = err
+            | r <- logBase old_delta delta, 1.99 < r && r < 2.01 = delta*delta
+            | otherwise                                          = delta
   go !k !t !_ !err [] = [res t err k]
   res i e k = Result (i*c) (e*c) (1 + 12*(2^k))
   c  = 0.5 * (b - a)
@@ -149,9 +149,9 @@ simpson' nf f a b = go (0 :: Int) i01 (i01*4/3) (abs (i1-i0)) m_huge dd where
       !t' = ht'+ht
       !s' = (4*t'-t)/3
       !delta = abs (s'-s)
-      !err' | delta == 0 || old_delta == 0                         = err
-            | r <- log delta / log old_delta, 1.99 < r && r < 2.01 = delta*delta
-            | otherwise                                            = delta
+      !err' | delta == 0 || old_delta == 0                       = err
+            | r <- logBase old_delta delta, 1.99 < r && r < 2.01 = delta*delta
+            | otherwise                                          = delta
   go !k _ !s !_ !err [] = [res s err k]
   res i e k = Result (i*c) (e*c) (1 + 12*(2^k))
   c  = 0.5 * (b - a)
