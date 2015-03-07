@@ -22,7 +22,9 @@ library
 
   exposed-modules: Numeric.Integration.TanhSinh
 
-  ghc-options: -O2 -fexcess-precision -Wall -O2 -fspec-constr -fliberate-case -fstatic-argument-transformation -fspec-constr-count=10
+  hs-source-dirs: src
+
+  ghc-options: -O2 -fexcess-precision -Wall -fspec-constr -fliberate-case -fstatic-argument-transformation -fspec-constr-count=10
 
 source-repository head
   type: git
