@@ -15,6 +15,10 @@ cabal-version:       >=1.6
 
 extra-source-files: codegen/TableGen.hs
 
+flag herbie
+  manual: True
+  default: False
+
 library
   -- Packages needed in order to build this package.
   build-depends:
@@ -22,6 +26,11 @@ library
      parallel               >= 3.2 && < 3.3
 
   exposed-modules: Numeric.Integration.TanhSinh
+
+  if flag(herbie)
+    build-depends: HerbiePlugin >= 0.1 && < 0.2
+    cpp-options: -DHERBIE
+    ghc-options: -fplugin=Herbie
 
   hs-source-dirs: src
 
